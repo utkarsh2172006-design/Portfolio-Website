@@ -251,7 +251,7 @@ export default function Home() {
   return (
     <div
       className="min-h-screen bg-[#EFE9DD] text-[#0A0A0A] selection:bg-[#E63946] selection:text-white relative overflow-x-hidden"
-      style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
+      style={{ fontFamily: "var(--font-sans), sans-serif" }}
     >
       {/* Custom cursor (desktop only) */}
       <Cursor x={cursor.x} y={cursor.y} hovering={cursor.hovering} />
@@ -278,7 +278,7 @@ export default function Home() {
             <span className="w-2.5 h-2.5 rounded-full bg-[#E63946] group-hover:scale-150 transition-transform" />
             <span
               className="text-base md:text-lg font-bold tracking-tight"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
+              style={{ fontFamily: "var(--font-display), sans-serif" }}
             >
               Utkarsh<span className="text-[#E63946]">.</span>
             </span>
@@ -293,7 +293,7 @@ export default function Home() {
               >
                 <span
                   className="text-[10px] font-mono text-[#E63946] opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all"
-                  style={{ fontFamily: "var(--font-geist-mono), monospace" }}
+                  style={{ fontFamily: "var(--font-mono), monospace" }}
                 >
                   {l.num}
                 </span>
@@ -392,11 +392,11 @@ export default function Home() {
               </div>
 
               <h1
-                className="font-black leading-[0.85] tracking-[-0.04em] text-[18vw] md:text-[12vw] lg:text-[10rem] xl:text-[12rem]"
-                style={{ fontFamily: "var(--font-playfair), serif" }}
+                className="font-extrabold leading-[0.85] tracking-[-0.04em] text-[18vw] md:text-[12vw] lg:text-[10rem] xl:text-[12rem] uppercase"
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 <span className="block">Utkarsh</span>
-                <span className="block italic font-normal text-[#E63946]">
+                <span className="block font-light text-[#E63946]">
                   Jaiswal<span className="text-[#0A0A0A]">.</span>
                 </span>
               </h1>
@@ -405,10 +405,10 @@ export default function Home() {
                 <div className="md:col-span-7">
                   <p
                     className="text-xl md:text-2xl leading-relaxed text-[#0A0A0A]/80"
-                    style={{ fontFamily: "var(--font-instrument), serif" }}
+                    style={{ fontFamily: "var(--font-sans), sans-serif" }}
                   >
                     Turning raw, messy data into clean,{" "}
-                    <em className="text-[#E63946]">human-readable</em> stories.
+                    <em className="text-[#E63946] not-italic font-semibold">human-readable</em> stories.
                     Second-year BS Applied AI &amp; Data Science undergrad at{" "}
                     <span className="font-semibold text-[#0A0A0A]">IIT Jodhpur</span>,
                     chasing the craft of dashboards, segmentation, and uplift testing.
@@ -475,10 +475,10 @@ export default function Home() {
             <div className="md:col-span-7">
               <p
                 className="text-2xl md:text-4xl leading-[1.3] tracking-tight"
-                style={{ fontFamily: "var(--font-playfair), serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 I&apos;m a{" "}
-                <span className="italic text-[#E63946]">curious mind</span> in
+                <span className="text-[#E63946] font-bold">curious mind</span> in
                 year two of a BS in Applied AI &amp; Data Science at{" "}
                 <span className="underline decoration-2 underline-offset-4 decoration-[#0047FF]">
                   IIT Jodhpur
@@ -594,7 +594,7 @@ export default function Home() {
               <div className="md:col-span-8">
                 <p
                   className="text-2xl md:text-3xl leading-tight"
-                  style={{ fontFamily: "var(--font-playfair), serif" }}
+                  style={{ fontFamily: "var(--font-display), sans-serif" }}
                 >
                   Want a deeper look at my code &amp; experiments?
                 </p>
@@ -653,7 +653,7 @@ export default function Home() {
                 </p>
                 <p
                   className="text-lg md:text-xl"
-                  style={{ fontFamily: "var(--font-instrument), serif" }}
+                  style={{ fontFamily: "var(--font-sans), sans-serif" }}
                 >
                   Intermediate Python, statistics fundamentals, machine learning
                   basics, and SQL window functions.
@@ -667,7 +667,7 @@ export default function Home() {
         <section id="contact" className="py-24 md:py-32 px-5 md:px-8 bg-[#0A0A0A] text-[#EFE9DD] relative overflow-hidden">
           <div
             className="absolute -top-8 -right-8 text-[20vw] font-black opacity-[0.05] leading-none select-none pointer-events-none"
-            style={{ fontFamily: "var(--font-playfair), serif" }}
+            style={{ fontFamily: "var(--font-display), sans-serif" }}
           >
             HELLO.
           </div>
@@ -678,10 +678,10 @@ export default function Home() {
             </p>
             <h2
               className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] mb-8"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
+              style={{ fontFamily: "var(--font-display), sans-serif" }}
             >
               Got a{" "}
-              <span className="italic font-normal text-[#E63946]">data</span>{" "}
+              <span className="font-light text-[#E63946]">data</span>{" "}
               problem?
               <br />
               <span className="text-[#EFE9DD]/60">Let&apos;s solve it.</span>
@@ -689,7 +689,7 @@ export default function Home() {
 
             <p
               className="text-xl md:text-2xl text-[#EFE9DD]/70 max-w-2xl mb-16"
-              style={{ fontFamily: "var(--font-instrument), serif" }}
+              style={{ fontFamily: "var(--font-sans), sans-serif" }}
             >
               Looking for a Data Analyst intern who&apos;s hungry to learn, ships
               fast, and treats dashboards like a craft. Let&apos;s connect.
@@ -848,7 +848,7 @@ function Marquee({
           <span
             key={i}
             className="mx-6 md:mx-10 text-2xl md:text-4xl font-black tracking-tight flex items-center gap-6 md:gap-10"
-            style={{ fontFamily: "var(--font-playfair), serif" }}
+            style={{ fontFamily: "var(--font-display), sans-serif" }}
           >
             <span style={{ color: i % 4 === 1 ? accent : fg }}>{word}</span>
             <Asterisk
@@ -894,7 +894,7 @@ function Section({
           <div className="flex items-baseline gap-3 mb-3">
             <span
               className="text-xs font-mono uppercase tracking-widest text-[#E63946]"
-              style={{ fontFamily: "var(--font-geist-mono), monospace" }}
+              style={{ fontFamily: "var(--font-mono), monospace" }}
             >
               — {num} /
             </span>
@@ -904,7 +904,7 @@ function Section({
           </div>
           <h2
             className="text-6xl md:text-8xl lg:text-9xl font-black tracking-[-0.04em] leading-[0.9]"
-            style={{ fontFamily: "var(--font-playfair), serif" }}
+            style={{ fontFamily: "var(--font-display), sans-serif" }}
           >
             {title}
             <span className="text-[#E63946]">.</span>
@@ -938,7 +938,7 @@ function AnimatedStat({
     <div ref={ref} className="group">
       <p
         className="text-5xl md:text-6xl lg:text-7xl font-black leading-none group-hover:text-[#E63946] transition-colors"
-        style={{ fontFamily: "var(--font-playfair), serif" }}
+        style={{ fontFamily: "var(--font-display), sans-serif" }}
       >
         {display}
         <span className="text-2xl md:text-3xl text-[#0A0A0A]/40 ml-1">{suffix}</span>
@@ -1001,7 +1001,7 @@ function SkillCard({
 
       <h3
         className="text-2xl md:text-3xl font-bold mb-4"
-        style={{ fontFamily: "var(--font-playfair), serif" }}
+        style={{ fontFamily: "var(--font-display), sans-serif" }}
       >
         {skill.category}
       </h3>
@@ -1045,7 +1045,7 @@ function ProjectBlock({
         <div className="md:col-span-3 flex md:flex-col items-start gap-3">
           <span
             className="text-5xl md:text-7xl font-black leading-none"
-            style={{ fontFamily: "var(--font-playfair), serif", color: project.color }}
+            style={{ fontFamily: "var(--font-display), sans-serif", color: project.color }}
           >
             0{index + 1}
           </span>
@@ -1061,13 +1061,13 @@ function ProjectBlock({
         <div className="md:col-span-9">
           <h3
             className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 group-hover:text-[#0A0A0A] transition-colors"
-            style={{ fontFamily: "var(--font-playfair), serif" }}
+            style={{ fontFamily: "var(--font-display), sans-serif" }}
           >
             {project.title}
           </h3>
           <p
             className="text-lg md:text-xl text-[#0A0A0A]/70 mb-6 leading-relaxed"
-            style={{ fontFamily: "var(--font-instrument), serif" }}
+            style={{ fontFamily: "var(--font-sans), sans-serif" }}
           >
             {project.description}
           </p>
@@ -1117,7 +1117,7 @@ function EduCard({ edu }: { edu: typeof EDUCATION[number] }) {
         </div>
         <h3
           className="text-xl md:text-2xl font-bold leading-tight mb-1"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
+          style={{ fontFamily: "var(--font-display), sans-serif" }}
         >
           {edu.degree}
         </h3>
@@ -1204,7 +1204,7 @@ function ContactRow({
         </div>
         <ArrowUpRight className="w-4 h-4 text-[#EFE9DD]/30 group-hover:text-[#E63946] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
       </div>
-      <p className="text-lg md:text-xl font-medium break-all" style={{ fontFamily: "var(--font-playfair), serif" }}>
+      <p className="text-lg md:text-xl font-medium break-all" style={{ fontFamily: "var(--font-display), sans-serif" }}>
         {value}
       </p>
     </a>
