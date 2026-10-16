@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -13,10 +13,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  style: ["normal", "italic"],
+});
+
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
-  title: "Utkarsh Jaiswal — Aspiring Data Analyst | AI & DS Student at IIT Jodhpur",
+  title: "Utkarsh Jaiswal — Data Artist & Analyst in the Making",
   description:
-    "Portfolio of Utkarsh Jaiswal, an undergraduate BS Applied AI & Data Science student at IIT Jodhpur specializing in Python, SQL, Power BI, Tableau, and data analytics. Seeking Data Analyst internship roles.",
+    "Portfolio of Utkarsh Jaiswal — BS Applied AI & Data Science undergraduate at IIT Jodhpur. Data storytelling, dashboards, and analytical experiments.",
   keywords: [
     "Utkarsh Jaiswal",
     "Data Analyst",
@@ -33,15 +47,15 @@ export const metadata: Metadata = {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
-    description: "AI & Data Science Undergraduate at IIT Jodhpur. Python, SQL, BI tools, dashboards, and data storytelling.",
+    title: "Utkarsh Jaiswal — Data Artist & Analyst",
+    description: "AI & Data Science Undergraduate at IIT Jodhpur. Where data meets design.",
     url: "https://chat.z.ai",
     siteName: "Utkarsh Jaiswal Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
+    title: "Utkarsh Jaiswal — Data Artist & Analyst",
     description: "AI & Data Science Undergraduate at IIT Jodhpur.",
   },
 };
@@ -52,9 +66,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${instrument.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />
