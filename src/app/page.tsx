@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef } from "react"
 import {
   Mail,
   Phone,
@@ -10,25 +10,18 @@ import {
   ArrowRight,
   ArrowUpRight,
   ExternalLink,
+  Sparkles,
   Code2,
   Database,
   BarChart3,
-  Sparkles,
   GraduationCap,
   Award,
   MapPin,
-  Cpu,
-  Brain,
-  Activity,
-  GitBranch,
-  Layers,
-  ChevronUp,
-  Menu,
-  X,
-  Terminal,
-  Zap,
+  Asterisk,
+  Plus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
 // ─────────────────────────────────────────────────────────────
@@ -37,7 +30,7 @@ import { Card, CardContent } from "@/components/ui/card"
 
 const PERSONAL = {
   name: "Utkarsh Jaiswal",
-  title: "AI & Data Science Undergraduate",
+  title: "Data Analyst in the Making",
   institution: "IIT Jodhpur",
   email: "utkarsh2172006@gmail.com",
   phone: "+91 9236064084",
@@ -47,67 +40,39 @@ const PERSONAL = {
   resumePath: "/Utkarsh_Jaiswal_Resume.pdf",
 }
 
-const SKILL_LAYERS = [
+const SKILLS = [
   {
-    layer: "L1",
-    name: "Input Layer",
-    subtitle: "Data ingestion & preprocessing",
+    category: "Programming",
+    icon: Code2,
+    color: "#E63946",
+    items: ["Python", "pandas", "numpy", "matplotlib", "seaborn", "scikit-learn"],
+  },
+  {
+    category: "Databases & SQL",
     icon: Database,
-    color: "#00D9FF",
-    skills: [
-      { name: "Python", level: 75 },
-      { name: "pandas", level: 72 },
-      { name: "numpy", level: 70 },
-      { name: "SQL", level: 65 },
-    ],
+    color: "#0047FF",
+    items: ["SELECT", "WHERE", "GROUP BY", "JOINs", "Subqueries"],
   },
   {
-    layer: "L2",
-    name: "Hidden Layer",
-    subtitle: "Analysis & modeling",
-    icon: Brain,
-    color: "#A855F7",
-    skills: [
-      { name: "Statistics", level: 60 },
-      { name: "EDA", level: 78 },
-      { name: "scikit-learn", level: 55 },
-      { name: "Data Cleaning", level: 75 },
-    ],
-  },
-  {
-    layer: "L3",
-    name: "Hidden Layer",
-    subtitle: "Visualization & storytelling",
+    category: "BI & Visualization",
     icon: BarChart3,
-    color: "#EC4899",
-    skills: [
-      { name: "Power BI", level: 70 },
-      { name: "Tableau", level: 68 },
-      { name: "matplotlib", level: 72 },
-      { name: "Dashboards", level: 75 },
-    ],
+    color: "#FF2D78",
+    items: ["Power BI", "Tableau", "Excel Pivot Tables", "Charts & Dashboards"],
   },
   {
-    layer: "L4",
-    name: "Output Layer",
-    subtitle: "Decisions & deployment",
+    category: "Analysis Concepts",
     icon: Sparkles,
-    color: "#10B981",
-    skills: [
-      { name: "Data Storytelling", level: 80 },
-      { name: "Uplift Testing", level: 65 },
-      { name: "Segmentation", level: 72 },
-      { name: "Excel", level: 78 },
-    ],
+    color: "#00B388",
+    items: ["EDA", "Data Cleaning", "Customer Segmentation", "Uplift Testing"],
   },
 ]
 
 const PROJECTS = [
   {
-    title: "Quantium Data Analytics Simulation",
+    title: "Quantium Data Analytics",
     company: "Quantium · via The Forage",
     date: "2025",
-    type: "VIRTUAL INTERNSHIP",
+    type: "Virtual Internship",
     description:
       "Processed customer transaction data, performed segmentation, and ran uplift testing on a trial layout change to isolate sales impact.",
     bullets: [
@@ -117,18 +82,13 @@ const PROJECTS = [
       "Translated findings into commercial recommendations for category management",
     ],
     stack: ["Python", "pandas", "matplotlib", "Excel"],
-    metrics: [
-      { label: "Customer segments", value: 4 },
-      { label: "Stores analyzed", value: 8 },
-      { label: "Data points", value: 264000 },
-    ],
-    color: "#00D9FF",
+    color: "#E63946",
   },
   {
     title: "Deloitte Australia — Daikibo Industrials",
     company: "Deloitte Australia · via The Forage",
     date: "2025",
-    type: "VIRTUAL INTERNSHIP",
+    type: "Virtual Internship",
     description:
       "Analyzed manufacturing telemetry data to identify data quality issues and equipment performance patterns, then built interactive dashboards.",
     bullets: [
@@ -137,12 +97,7 @@ const PROJECTS = [
       "Identified recurring operational patterns and summarized findings into maintenance insights",
     ],
     stack: ["Excel", "Tableau", "Power BI"],
-    metrics: [
-      { label: "Equipment sites", value: 4 },
-      { label: "Metrics tracked", value: 6 },
-      { label: "Anomalies flagged", value: 12 },
-    ],
-    color: "#A855F7",
+    color: "#0047FF",
   },
 ]
 
@@ -150,7 +105,7 @@ const EDUCATION = [
   {
     degree: "BS in Applied AI & Data Science",
     school: "Indian Institute of Technology (IIT) Jodhpur",
-    date: "2025 — 2029 (Expected)",
+    date: "2025 — 2029",
     detail: "1st Year Completed · CGPA 7.25 / 10",
     coursework: [
       "Probability & Statistics",
@@ -179,23 +134,22 @@ const STRENGTHS = [
   "Data Storytelling",
 ]
 
-const TRAINING_LOSS = [
-  0.95, 0.78, 0.65, 0.54, 0.48, 0.42, 0.38, 0.34, 0.31, 0.29, 0.27, 0.26,
-  0.24, 0.23, 0.22, 0.21, 0.205, 0.20, 0.198, 0.195,
-]
-
-const TYPING_LINES = [
-  { prompt: ">>> ", code: "import pandas as pd", comment: "# load the toolkit" },
-  { prompt: ">>> ", code: "df = pd.read_csv('life.csv')", comment: "# 21 years of data" },
-  { prompt: ">>> ", code: "model.fit(X_train, y_train)", comment: "# learning..." },
-  { prompt: ">>> ", code: "accuracy = model.score(X_test, y_test)", comment: "" },
-  { prompt: ">>> ", code: "print(f'IGP ready: {accuracy:.2%}')", comment: "" },
+const MARQUEE_WORDS = [
+  "DATA STORYTELLING",
+  "PYTHON",
+  "SQL",
+  "POWER BI",
+  "TABLEAU",
+  "DASHBOARDS",
+  "EDA",
+  "STATISTICS",
+  "AI / DS",
+  "IIT JODHPUR",
 ]
 
 // ─────────────────────────────────────────────────────────────
-// Hooks
+// Hook: scroll-triggered reveal
 // ─────────────────────────────────────────────────────────────
-
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null)
   const [visible, setVisible] = useState(false)
@@ -209,7 +163,7 @@ function useReveal<T extends HTMLElement>() {
           obs.unobserve(el)
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
     )
     obs.observe(el)
     return () => obs.disconnect()
@@ -217,6 +171,9 @@ function useReveal<T extends HTMLElement>() {
   return { ref, visible }
 }
 
+// ─────────────────────────────────────────────────────────────
+// Hook: animated counter
+// ─────────────────────────────────────────────────────────────
 function useCounter(target: number, duration = 1500, start = false) {
   const [val, setVal] = useState(0)
   useEffect(() => {
@@ -226,7 +183,7 @@ function useCounter(target: number, duration = 1500, start = false) {
     const tick = (now: number) => {
       const p = Math.min((now - startTime) / duration, 1)
       const eased = 1 - Math.pow(1 - p, 3)
-      setVal(eased * target)
+      setVal(Math.floor(eased * target))
       if (p < 1) raf = requestAnimationFrame(tick)
       else setVal(target)
     }
@@ -243,44 +200,68 @@ function useCounter(target: number, duration = 1500, start = false) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [showTop, setShowTop] = useState(false)
+  const [cursor, setCursor] = useState({ x: 0, y: 0, hovering: false })
   const [menuOpen, setMenuOpen] = useState(false)
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const [time, setTime] = useState("")
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 30)
       setShowTop(window.scrollY > 600)
     }
     const onMouseMove = (e: MouseEvent) => {
-      setMouse({ x: e.clientX, y: e.clientY })
+      setCursor({ x: e.clientX, y: e.clientY, hovering: false })
+    }
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const interactive = target.closest("a, button, [data-cursor='hover']")
+      setCursor((c) => ({ ...c, hovering: !!interactive }))
+    }
+    const updateTime = () => {
+      const t = new Date().toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Kolkata",
+      })
+      setTime(t)
     }
     window.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("mousemove", onMouseMove)
+    window.addEventListener("mouseover", onMouseOver)
+    updateTime()
+    const interval = setInterval(updateTime, 1000)
     return () => {
       window.removeEventListener("scroll", onScroll)
       window.removeEventListener("mousemove", onMouseMove)
+      window.removeEventListener("mouseover", onMouseOver)
+      clearInterval(interval)
     }
   }, [])
 
   const navLinks = [
-    { label: "Architecture", href: "#architecture" },
-    { label: "Layers", href: "#layers" },
-    { label: "Training", href: "#training" },
-    { label: "Experiments", href: "#experiments" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "#about", num: "01" },
+    { label: "Skills", href: "#skills", num: "02" },
+    { label: "Work", href: "#projects", num: "03" },
+    { label: "Journey", href: "#education", num: "04" },
+    { label: "Contact", href: "#contact", num: "05" },
   ]
 
   return (
-    <div className="min-h-screen bg-[#050714] text-slate-100 selection:bg-cyan-500/30 selection:text-white relative overflow-x-hidden">
-      {/* Neural network animated background */}
-      <NeuralBackground mouse={mouse} />
+    <div
+      className="min-h-screen bg-[#EFE9DD] text-[#0A0A0A] selection:bg-[#E63946] selection:text-white relative overflow-x-hidden"
+      style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
+    >
+      {/* Custom cursor (desktop only) */}
+      <Cursor x={cursor.x} y={cursor.y} hovering={cursor.hovering} />
 
-      {/* Scanlines overlay */}
+      {/* Paper noise texture */}
       <div
-        className="pointer-events-none fixed inset-0 z-[1] opacity-[0.04]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.04] mix-blend-multiply"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0, 217, 255, 0.3) 2px, rgba(0, 217, 255, 0.3) 3px)",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
         }}
       />
 
@@ -288,29 +269,18 @@ export default function Home() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "backdrop-blur-xl bg-[#050714]/80 border-b border-cyan-500/15 py-3"
+            ? "backdrop-blur-md bg-[#EFE9DD]/85 border-b border-[#0A0A0A]/15 py-3"
             : "bg-transparent py-5"
         }`}
       >
-        <nav className="max-w-6xl mx-auto px-5 md:px-8 flex items-center justify-between">
-          <a href="#hero" className="flex items-center gap-2.5 group">
-            <div className="relative w-7 h-7">
-              <div className="absolute inset-0 rounded-md bg-gradient-to-br from-cyan-400 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute inset-0.5 rounded-[5px] bg-[#050714] flex items-center justify-center">
-                <span
-                  className="text-[10px] font-bold bg-gradient-to-br from-cyan-300 to-purple-300 bg-clip-text text-transparent"
-                  style={{ fontFamily: "var(--font-mono), monospace" }}
-                >
-                  UJ
-                </span>
-              </div>
-              <div className="absolute inset-0 rounded-md bg-cyan-400/30 blur-md group-hover:blur-lg transition-all" />
-            </div>
+        <nav className="container mx-auto px-5 md:px-8 flex items-center justify-between">
+          <a href="#hero" className="flex items-center gap-2 group">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E63946] group-hover:scale-150 transition-transform" />
             <span
-              className="text-sm font-semibold tracking-tight"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
+              className="text-base md:text-lg font-bold tracking-tight"
+              style={{ fontFamily: "var(--font-playfair), serif" }}
             >
-              utkarsh<span className="text-cyan-400">.</span>neural
+              Utkarsh<span className="text-[#E63946]">.</span>
             </span>
           </a>
 
@@ -319,50 +289,71 @@ export default function Home() {
               <a
                 key={l.href}
                 href={l.href}
-                className="group relative text-sm text-slate-400 hover:text-cyan-300 transition-colors font-mono"
+                className="group flex items-center gap-1.5 text-sm text-[#0A0A0A]/70 hover:text-[#0A0A0A] transition-colors"
               >
-                <span className="text-cyan-500/50 mr-1">/</span>
+                <span
+                  className="text-[10px] font-mono text-[#E63946] opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all"
+                  style={{ fontFamily: "var(--font-geist-mono), monospace" }}
+                >
+                  {l.num}
+                </span>
                 {l.label}
-                <span className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-cyan-400 transition-all duration-300" />
               </a>
             ))}
             <a href={PERSONAL.resumePath} download>
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-[#050714] font-semibold rounded-md border-0 px-4 group shadow-[0_0_20px_-5px_rgba(0,217,255,0.6)]"
+                className="bg-[#0A0A0A] hover:bg-[#1A1A1A] text-[#EFE9DD] rounded-full font-medium border-0 px-5 group"
               >
-                <Download className="w-3.5 h-3.5 mr-1.5" />
+                <Download className="w-3.5 h-3.5 mr-1.5 group-hover:-translate-y-0.5 transition-transform" />
                 Resume
+                <ArrowUpRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Button>
             </a>
           </div>
 
           <button
-            className="md:hidden text-slate-300"
+            className="md:hidden p-2 -mr-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <div className="flex flex-col gap-1.5">
+              <span
+                className={`block w-6 h-0.5 bg-[#0A0A0A] transition-transform ${
+                  menuOpen ? "rotate-45 translate-y-2" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-[#0A0A0A] transition-opacity ${
+                  menuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-[#0A0A0A] transition-transform ${
+                  menuOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
+              />
+            </div>
           </button>
         </nav>
 
         {menuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 backdrop-blur-xl bg-[#050714]/95 border-b border-cyan-500/15 px-5 py-4 flex flex-col gap-4">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-[#EFE9DD] border-b border-[#0A0A0A]/15 px-5 py-6 flex flex-col gap-4">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-sm font-mono text-slate-300 hover:text-cyan-300"
+                className="flex items-center gap-3 text-base text-[#0A0A0A]/80"
               >
-                <span className="text-cyan-500/50 mr-1">/</span>
+                <span className="font-mono text-xs text-[#E63946]">{l.num}</span>
                 {l.label}
               </a>
             ))}
-            <a href={PERSONAL.resumePath} download>
-              <Button size="sm" className="bg-gradient-to-r from-cyan-500 to-purple-500 text-[#050714] w-full font-semibold">
-                <Download className="w-3.5 h-3.5 mr-1.5" />
-                Resume
+            <a href={PERSONAL.resumePath} download className="mt-2">
+              <Button className="bg-[#0A0A0A] text-[#EFE9DD] rounded-full w-full">
+                <Download className="w-4 h-4 mr-2" />
+                Download Resume
               </Button>
             </a>
           </div>
@@ -371,803 +362,553 @@ export default function Home() {
 
       <main className="relative z-10">
         {/* ─── HERO ─── */}
-        <section id="hero" className="min-h-screen flex items-center px-5 md:px-8 pt-32 pb-20 relative">
-          <div className="max-w-6xl mx-auto w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-              {/* Left */}
-              <div className="lg:col-span-7">
-                {/* Status pill */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono mb-7">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
-                  </span>
-                  STATUS: TRAINING · OPEN TO INTERNSHIPS
+        <section
+          id="hero"
+          className="min-h-screen flex flex-col justify-between px-5 md:px-8 pt-32 pb-8 relative"
+        >
+          <div className="container mx-auto max-w-7xl">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono uppercase tracking-widest text-[#0A0A0A]/60 mb-12">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00B388] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00B388]" />
+                </span>
+                <span>Available for Internships</span>
+              </div>
+              <div className="hidden md:block">
+                Portfolio · Vol. 01 · {new Date().getFullYear()}
+              </div>
+              <div className="font-mono">{time} IST</div>
+            </div>
+          </div>
+
+          <div className="container mx-auto max-w-7xl flex-1 flex items-center">
+            <div className="w-full">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#E63946]">
+                  (Aspiring Data Analyst)
+                </span>
+                <span className="h-px flex-1 max-w-32 bg-[#0A0A0A]/20" />
+              </div>
+
+              <h1
+                className="font-black leading-[0.85] tracking-[-0.04em] text-[18vw] md:text-[12vw] lg:text-[10rem] xl:text-[12rem]"
+                style={{ fontFamily: "var(--font-playfair), serif" }}
+              >
+                <span className="block">Utkarsh</span>
+                <span className="block italic font-normal text-[#E63946]">
+                  Jaiswal<span className="text-[#0A0A0A]">.</span>
+                </span>
+              </h1>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mt-10 md:mt-14">
+                <div className="md:col-span-7">
+                  <p
+                    className="text-xl md:text-2xl leading-relaxed text-[#0A0A0A]/80"
+                    style={{ fontFamily: "var(--font-instrument), serif" }}
+                  >
+                    Turning raw, messy data into clean,{" "}
+                    <em className="text-[#E63946]">human-readable</em> stories.
+                    Second-year BS Applied AI &amp; Data Science undergrad at{" "}
+                    <span className="font-semibold text-[#0A0A0A]">IIT Jodhpur</span>,
+                    chasing the craft of dashboards, segmentation, and uplift testing.
+                  </p>
                 </div>
-
-                {/* Title */}
-                <h1
-                  className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-5"
-                  style={{ fontFamily: "var(--font-display), sans-serif" }}
-                >
-                  <span className="block">Utkarsh</span>
-                  <span className="block bg-gradient-to-r from-cyan-300 via-violet-300 to-pink-300 bg-clip-text text-transparent">
-                    Jaiswal
-                  </span>
-                </h1>
-
-                <p className="text-lg md:text-xl text-slate-300 mb-2 font-mono">
-                  <span className="text-cyan-400">&gt;</span> AI &amp; Data Science Undergraduate
-                </p>
-                <p className="text-sm text-slate-500 mb-8 font-mono">
-                  Indian Institute of Technology, Jodhpur · India
-                </p>
-
-                <p className="text-base md:text-lg text-slate-400 leading-relaxed mb-9 max-w-xl">
-                  Building intelligence from data — one epoch at a time. Currently
-                  training on Python, SQL, ML, and BI tools. Seeking an internship
-                  where neural networks meet real business decisions.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3 mb-8">
+                <div className="md:col-span-4 md:col-start-9 flex flex-col gap-3 self-end">
                   <a href={PERSONAL.resumePath} download>
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-[#050714] font-semibold rounded-md px-6 h-12 shadow-[0_0_30px_-8px_rgba(0,217,255,0.6)] group"
-                    >
-                      <Download className="w-4 h-4 mr-2 group-hover:-translate-y-0.5 transition-transform" />
-                      Download Resume
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+                    <Button className="group w-full bg-[#0A0A0A] hover:bg-[#1A1A1A] text-[#EFE9DD] rounded-none h-14 text-base font-medium justify-between px-6">
+                      <span className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Download CV
+                      </span>
+                      <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </Button>
                   </a>
                   <a href="#contact">
                     <Button
-                      size="lg"
                       variant="outline"
-                      className="bg-transparent border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-md px-6 h-12 font-mono"
+                      className="group w-full bg-transparent border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#EFE9DD] rounded-none h-14 text-base font-medium justify-between px-6"
                     >
-                      ./contact.sh
+                      Get in touch
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </a>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <SocialLink href={`mailto:${PERSONAL.email}`} icon={Mail} label="Email" color="#00D9FF" />
-                  <SocialLink href={PERSONAL.linkedin} icon={Linkedin} label="LinkedIn" color="#0A66C2" />
-                  <SocialLink href={PERSONAL.github} icon={Github} label="GitHub" color="#A855F7" />
-                  <SocialLink href={`tel:${PERSONAL.phone.replace(/\s/g, "")}`} icon={Phone} label="Phone" color="#10B981" />
-                </div>
-              </div>
-
-              {/* Right: Terminal panel */}
-              <div className="lg:col-span-5">
-                <TerminalPanel />
               </div>
             </div>
           </div>
+
+          <div className="container mx-auto max-w-7xl mt-16">
+            <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/60">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-3 h-3" />
+                {PERSONAL.location}
+              </div>
+              <div className="hidden md:flex items-center gap-1.5">
+                <span>Scroll to explore</span>
+                <span className="animate-bounce">↓</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <a href={`mailto:${PERSONAL.email}`} aria-label="Email" className="hover:text-[#E63946] transition-colors">
+                  <Mail className="w-4 h-4" />
+                </a>
+                <a href={PERSONAL.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0047FF] transition-colors">
+                  <Linkedin className="w-4 h-4" />
+                </a>
+                <a href={PERSONAL.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-[#0A0A0A] transition-colors">
+                  <Github className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <Asterisk className="absolute top-32 right-8 w-12 h-12 text-[#E63946] animate-spin-slow hidden md:block" />
+          <Plus className="absolute bottom-32 left-8 w-8 h-8 text-[#0047FF] rotate-45 hidden md:block" />
         </section>
 
-        {/* ─── ARCHITECTURE / ABOUT ─── */}
-        <NeuralSection
-          id="architecture"
-          layer="L0"
-          eyebrow="01 / Architecture"
-          title="About"
-          subtitle="The model behind the analyst."
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-7">
+        {/* ─── MARQUEE 1 ─── */}
+        <Marquee words={MARQUEE_WORDS} bg="#0A0A0A" fg="#EFE9DD" accent="#E63946" />
+
+        {/* ─── ABOUT ─── */}
+        <Section id="about" num="01" title="About" subtitle="Who I am.">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+            <div className="md:col-span-7">
               <p
-                className="text-2xl md:text-3xl leading-relaxed text-slate-200 font-light mb-6"
-                style={{ fontFamily: "var(--font-display), sans-serif" }}
+                className="text-2xl md:text-4xl leading-[1.3] tracking-tight"
+                style={{ fontFamily: "var(--font-playfair), serif" }}
               >
                 I&apos;m a{" "}
-                <span className="font-semibold text-cyan-300">curious mind</span> in
+                <span className="italic text-[#E63946]">curious mind</span> in
                 year two of a BS in Applied AI &amp; Data Science at{" "}
-                <span className="font-semibold text-white">IIT Jodhpur</span>.
+                <span className="underline decoration-2 underline-offset-4 decoration-[#0047FF]">
+                  IIT Jodhpur
+                </span>
+                . My toolkit is{" "}
+                <span className="font-bold">Python, SQL, Power BI</span> &amp;{" "}
+                <span className="font-bold">Tableau</span> — and I&apos;m learning
+                to wield it like a craftsperson.
               </p>
-              <p className="text-base text-slate-400 leading-relaxed mb-5">
-                <span className="text-cyan-400 font-mono"># </span>
-                My toolkit is Python, SQL, Power BI, and Tableau — and I&apos;m
-                learning to wield it like a craftsperson. Through hands-on virtual
-                internships with Quantium and Deloitte Australia, I&apos;ve cleaned
-                messy transactional data, segmented customers, designed uplift tests,
-                and built dashboards that surface real business insights.
+
+              <p className="mt-8 text-base md:text-lg text-[#0A0A0A]/70 leading-relaxed">
+                Through hands-on virtual internships with{" "}
+                <span className="font-semibold text-[#0A0A0A]">Quantium</span> and{" "}
+                <span className="font-semibold text-[#0A0A0A]">Deloitte Australia</span>,
+                I&apos;ve cleaned messy transactional data, segmented customers,
+                designed uplift tests, and built dashboards that surface real
+                business insights — not just pretty charts.
               </p>
-              <p className="text-base text-slate-400 leading-relaxed">
-                <span className="text-purple-400 font-mono"># </span>
-                Currently sharpening fundamentals in probability, linear algebra, and
-                ML while hunting for a Data Analyst internship where I can turn messy
-                data into clear decisions.
+
+              <p className="mt-5 text-base md:text-lg text-[#0A0A0A]/70 leading-relaxed">
+                Currently sharpening fundamentals in probability, linear algebra,
+                and ML, while hunting for a{" "}
+                <span className="font-semibold text-[#E63946]">Data Analyst internship</span>{" "}
+                where I can turn messy data into clear decisions.
               </p>
             </div>
 
-            <div className="lg:col-span-5 lg:border-l lg:border-cyan-500/15 lg:pl-8">
-              <p className="text-xs font-mono uppercase tracking-widest text-cyan-500/60 mb-5">
-                {"// system_info.txt"}
+            <div className="md:col-span-5 md:pl-8 md:border-l border-[#0A0A0A]/15">
+              <p className="text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/50 mb-6">
+                {"— Quick facts"}
               </p>
-              <dl className="space-y-3">
+              <dl className="space-y-4">
                 {[
-                  ["institution", "IIT Jodhpur"],
-                  ["field", "Applied AI & DS"],
-                  ["year", "2nd UG (2029)"],
-                  ["cgpa", "7.25 / 10"],
-                  ["location", "India"],
-                  ["status", "OPEN_TO_INTERNSHIPS"],
+                  ["Institute", "IIT Jodhpur"],
+                  ["Field", "Applied AI & Data Science"],
+                  ["Year", "2nd Year Undergraduate"],
+                  ["CGPA", "7.25 / 10"],
+                  ["Location", "India"],
+                  ["Status", "Open to internships"],
                 ].map(([k, v]) => (
-                  <div
-                    key={k}
-                    className="flex items-baseline justify-between gap-3 border-b border-cyan-500/10 pb-2 font-mono"
-                  >
-                    <dt className="text-xs uppercase tracking-wider text-slate-500">
-                      {k}<span className="text-cyan-500">:</span>
+                  <div key={k} className="flex items-baseline justify-between gap-3 border-b border-dashed border-[#0A0A0A]/15 pb-3">
+                    <dt className="text-xs font-mono uppercase tracking-wider text-[#0A0A0A]/50">
+                      {k}
                     </dt>
-                    <dd className="text-sm text-cyan-200 text-right">{v}</dd>
+                    <dd className="text-sm md:text-base font-medium text-right">{v}</dd>
                   </div>
                 ))}
               </dl>
             </div>
           </div>
 
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 pt-10 border-t border-cyan-500/15">
-            <NeuralStat value={7.25} suffix="/10" label="cgpa" decimals={2} color="#00D9FF" />
-            <NeuralStat value={2} suffix="yr" label="undergrad" color="#A855F7" />
-            <NeuralStat value={2} suffix="" label="internships" color="#EC4899" />
-            <NeuralStat value={16} suffix="+" label="skills" color="#10B981" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-10 border-t-2 border-[#0A0A0A]">
+            <AnimatedStat value={7.25} suffix="/10" label="CGPA" decimals={2} />
+            <AnimatedStat value={2} suffix="nd yr" label="of undergrad" />
+            <AnimatedStat value={2} suffix="" label="virtual internships" />
+            <AnimatedStat value={2029} suffix="" label="graduating class" />
           </div>
-        </NeuralSection>
+        </Section>
 
-        {/* ─── LAYERS / SKILLS ─── */}
-        <NeuralSection
-          id="layers"
-          layer="L1-L4"
-          eyebrow="02 / Network Topology"
-          title="Layers"
-          subtitle="The neural architecture, decoded."
-          alt
-        >
-          <div className="space-y-6">
-            {SKILL_LAYERS.map((layer, i) => (
-              <LayerCard key={layer.layer} layer={layer} index={i} />
-            ))}
+        {/* ─── MARQUEE 2 ─── */}
+        <Marquee
+          words={["PYTHON", "SQL", "TABLEAU", "POWER BI", "PANDAS", "NUMPY", "EDA", "DASHBOARDS"]}
+          bg="#E63946"
+          fg="#EFE9DD"
+          accent="#0A0A0A"
+        />
+
+        {/* ─── SKILLS ─── */}
+        <Section id="skills" num="02" title="Skills" subtitle="The toolkit.">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {SKILLS.map((skill, i) => {
+              const Icon = skill.icon
+              return (
+                <SkillCard
+                  key={skill.category}
+                  skill={skill}
+                  icon={Icon}
+                  index={i}
+                />
+              )
+            })}
           </div>
 
-          {/* Strengths strip */}
-          <div className="mt-12 pt-8 border-t border-cyan-500/15">
-            <p className="text-xs font-mono uppercase tracking-widest text-cyan-500/60 mb-4">
-              {"// activation_functions"}
+          <div className="mt-12 pt-8 border-t border-[#0A0A0A]/20">
+            <p className="text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/50 mb-5">
+              {"— Core strengths"}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 md:gap-3">
               {STRENGTHS.map((s, i) => (
                 <span
                   key={s}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-mono bg-cyan-500/5 border border-cyan-500/20 text-cyan-200 rounded hover:border-cyan-400/50 hover:bg-cyan-500/10 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-[#0A0A0A] rounded-full text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#EFE9DD] transition-colors cursor-default"
                   style={{ transitionDelay: `${i * 30}ms` }}
                 >
-                  <Zap className="w-3 h-3 text-cyan-400" />
+                  <Asterisk className="w-3 h-3 text-[#E63946]" />
                   {s}
                 </span>
               ))}
             </div>
           </div>
-        </NeuralSection>
+        </Section>
 
-        {/* ─── TRAINING / DATA VIZ ─── */}
-        <NeuralSection
-          id="training"
-          layer="loss"
-          eyebrow="03 / Training Metrics"
-          title="Training"
-          subtitle="Loss curves and learning rate."
-        >
-          <p className="text-base text-slate-400 mb-10 max-w-2xl">
-            <span className="text-cyan-400 font-mono"># </span>
-            A live snapshot of my learning trajectory. Just like a neural network
-            finding its minima — every project, every book, every bug brings me
-            closer to the optimal decision boundary.
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
-            {/* Loss chart */}
-            <Card className="lg:col-span-2 bg-slate-900/40 border-cyan-500/20 backdrop-blur-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-xs font-mono uppercase tracking-widest text-cyan-500/60 mb-1">
-                      loss_curve
-                    </p>
-                    <h3 className="text-base font-semibold text-white">
-                      Learning trajectory · 20 epochs
-                    </h3>
-                  </div>
-                  <Activity className="w-5 h-5 text-cyan-400" />
-                </div>
-                <LossChart data={TRAINING_LOSS} />
-                <div className="flex items-center justify-between mt-3 text-xs font-mono">
-                  <span className="text-slate-500">epoch 1: loss=0.95</span>
-                  <span className="text-emerald-400">epoch 20: loss=0.195 ↓ 79%</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick stats */}
-            <div className="space-y-4">
-              <MetricCard
-                label="Data points processed"
-                value="264K+"
-                icon={Database}
-                color="#00D9FF"
-              />
-              <MetricCard
-                label="Tools in rotation"
-                value="8+"
-                icon={Cpu}
-                color="#A855F7"
-              />
-              <MetricCard
-                label="Models built (sim)"
-                value="2"
-                icon={Brain}
-                color="#EC4899"
-              />
-            </div>
-          </div>
-
-          {/* Big gradient strip */}
-          <div className="p-6 md:p-8 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-cyan-500/20 rounded-lg backdrop-blur-sm">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <p className="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-1">
-                  {"// currently learning"}
-                </p>
-                <p className="text-base text-white">Intermediate Python, statistics fundamentals, machine learning basics, and SQL window functions.</p>
-              </div>
-              <div>
-                <p className="text-xs font-mono uppercase tracking-widest text-purple-400 mb-1">
-                  {"// next milestone"}
-                </p>
-                <p className="text-base text-white">Build my first end-to-end ML project — from data ingestion to deployed dashboard.</p>
-              </div>
-              <div>
-                <p className="text-xs font-mono uppercase tracking-widest text-pink-400 mb-1">
-                  {"// seeking"}
-                </p>
-                <p className="text-base text-white">Data Analyst internship where I can ship real insights, not just notebooks.</p>
-              </div>
-            </div>
-          </div>
-        </NeuralSection>
-
-        {/* ─── EXPERIMENTS / PROJECTS ─── */}
-        <NeuralSection
-          id="experiments"
-          layer="exp"
-          eyebrow="04 / Experiments"
-          title="Work"
-          subtitle="Real training runs & outcomes."
-          alt
-        >
-          <div className="space-y-6">
+        {/* ─── PROJECTS ─── */}
+        <Section id="projects" num="03" title="Work" subtitle="Projects & simulations.">
+          <div className="space-y-8 md:space-y-12">
             {PROJECTS.map((project, idx) => (
-              <ExperimentCard key={project.title} project={project} index={idx} />
+              <ProjectBlock key={project.title} project={project} index={idx} />
             ))}
           </div>
 
-          {/* Call to action */}
-          <div className="mt-10 p-6 md:p-8 bg-gradient-to-br from-slate-900 to-slate-900/40 border border-cyan-500/20 rounded-lg">
+          <div className="mt-16 p-8 md:p-12 bg-[#0A0A0A] text-[#EFE9DD] rounded-none">
             <div className="grid md:grid-cols-12 gap-6 items-center">
               <div className="md:col-span-8">
                 <p
-                  className="text-xl md:text-2xl leading-tight text-white"
-                  style={{ fontFamily: "var(--font-display), sans-serif" }}
+                  className="text-2xl md:text-3xl leading-tight"
+                  style={{ fontFamily: "var(--font-playfair), serif" }}
                 >
-                  Want to see my code &amp; ongoing experiments?
+                  Want a deeper look at my code &amp; experiments?
                 </p>
-                <p className="text-sm text-slate-400 mt-2 font-mono">
-                  $ git clone https://github.com/utkarsh2172006-design
+                <p className="text-sm text-[#EFE9DD]/60 mt-2">
+                  Head over to my GitHub for repositories, Jupyter notebooks, and works in progress.
                 </p>
               </div>
               <div className="md:col-span-4 flex md:justify-end">
                 <a href={PERSONAL.github} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-[#050714] font-semibold rounded-md h-12 px-6 group shadow-[0_0_30px_-8px_rgba(0,217,255,0.6)]">
-                    <GitBranch className="w-4 h-4 mr-2" />
-                    View GitHub
-                    <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <Button className="bg-[#E63946] hover:bg-[#ff5050] text-[#EFE9DD] rounded-none h-14 px-6 font-medium group">
+                    Visit GitHub
+                    <ArrowUpRight className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </Button>
                 </a>
               </div>
             </div>
           </div>
-        </NeuralSection>
+        </Section>
 
-        {/* ─── EDUCATION / JOURNEY ─── */}
-        <NeuralSection
-          id="education"
-          layer="hist"
-          eyebrow="05 / History"
-          title="Journey"
-          subtitle="Education & certifications log."
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
+        {/* ─── EDUCATION ─── */}
+        <Section id="education" num="04" title="Journey" subtitle="Education & certifications.">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div>
-              <p className="text-xs font-mono uppercase tracking-widest text-cyan-500/60 mb-6">
-                {"// education.log"}
+              <p className="text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/50 mb-6">
+                {"— Education"}
               </p>
-              <div className="relative pl-6">
-                <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400 via-purple-500/50 to-transparent" />
+              <div className="space-y-6">
                 {EDUCATION.map((edu, i) => (
-                  <div key={i} className="relative mb-8 last:mb-0">
-                    <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full bg-cyan-400 border-2 border-[#050714] shadow-[0_0_12px_rgba(0,217,255,0.8)]" />
-                    <div className="flex items-center gap-2 mb-1">
-                      <GraduationCap className="w-4 h-4 text-cyan-400" />
-                      <span className="text-xs font-mono text-slate-500">{edu.date}</span>
-                    </div>
-                    <h3 className="text-base md:text-lg font-semibold text-white mb-1">
-                      {edu.degree}
-                    </h3>
-                    <p className="text-sm text-cyan-300 font-medium mb-1">{edu.school}</p>
-                    <p className="text-sm text-slate-400 mb-2">{edu.detail}</p>
-                    {edu.coursework.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {edu.coursework.map((c) => (
-                          <span
-                            key={c}
-                            className="px-2 py-0.5 text-[10px] font-mono bg-cyan-500/5 text-cyan-300/70 border border-cyan-500/20 rounded"
-                          >
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <EduCard key={i} edu={edu} />
                 ))}
               </div>
             </div>
 
             <div>
-              <p className="text-xs font-mono uppercase tracking-widest text-cyan-500/60 mb-6">
-                {"// certifications.log"}
+              <p className="text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/50 mb-6">
+                {"— Certifications"}
               </p>
-              <div className="space-y-3 mb-8">
+              <div className="space-y-4">
                 <CertCard
                   title="Quantium Data Analytics Job Simulation"
                   org="The Forage"
                   year="2025"
-                  color="#00D9FF"
+                  color="#E63946"
                 />
                 <CertCard
                   title="Deloitte Australia Data Analytics Job Simulation"
                   org="The Forage"
                   year="2025"
-                  color="#A855F7"
+                  color="#0047FF"
                 />
               </div>
 
-              {/* Live status block */}
-              <div className="p-5 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border-l-2 border-cyan-400 rounded-r-lg">
-                <p className="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2 flex items-center gap-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
-                  </span>
-                  system_status: ACTIVE
+              <div className="mt-8 p-6 bg-[#FF2D78]/10 border-l-4 border-[#FF2D78]">
+                <p className="text-xs font-mono uppercase tracking-widest text-[#FF2D78] mb-3">
+                  Currently learning
                 </p>
-                <p className="text-sm text-slate-300 leading-relaxed">
-                  Currently in training mode — loading new weights for Intermediate
-                  Python, statistics fundamentals, and SQL window functions.
+                <p
+                  className="text-lg md:text-xl"
+                  style={{ fontFamily: "var(--font-instrument), serif" }}
+                >
+                  Intermediate Python, statistics fundamentals, machine learning
+                  basics, and SQL window functions.
                 </p>
               </div>
             </div>
           </div>
-        </NeuralSection>
+        </Section>
 
         {/* ─── CONTACT ─── */}
-        <section id="contact" className="py-24 md:py-32 px-5 md:px-8 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-4">
-              — 06 / init_inference()
+        <section id="contact" className="py-24 md:py-32 px-5 md:px-8 bg-[#0A0A0A] text-[#EFE9DD] relative overflow-hidden">
+          <div
+            className="absolute -top-8 -right-8 text-[20vw] font-black opacity-[0.05] leading-none select-none pointer-events-none"
+            style={{ fontFamily: "var(--font-playfair), serif" }}
+          >
+            HELLO.
+          </div>
+
+          <div className="container mx-auto max-w-7xl relative">
+            <p className="text-xs font-mono uppercase tracking-widest text-[#E63946] mb-4">
+              {"— 05 / Let's talk"}
             </p>
             <h2
-              className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
+              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] mb-8"
+              style={{ fontFamily: "var(--font-playfair), serif" }}
             >
-              <span className="block text-white">Got a data</span>
-              <span className="block bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-                problem to solve?
-              </span>
+              Got a{" "}
+              <span className="italic font-normal text-[#E63946]">data</span>{" "}
+              problem?
+              <br />
+              <span className="text-[#EFE9DD]/60">Let&apos;s solve it.</span>
             </h2>
-            <p className="text-base md:text-lg text-slate-400 mb-12 max-w-xl mx-auto">
-              <span className="text-cyan-400 font-mono">&gt; </span>
-              Let&apos;s connect. I respond within 24 hours. Open to internships,
-              freelance analytics work, and collaborations.
+
+            <p
+              className="text-xl md:text-2xl text-[#EFE9DD]/70 max-w-2xl mb-16"
+              style={{ fontFamily: "var(--font-instrument), serif" }}
+            >
+              Looking for a Data Analyst intern who&apos;s hungry to learn, ships
+              fast, and treats dashboards like a craft. Let&apos;s connect.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10">
-              <ContactCard
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <ContactRow
                 href={`mailto:${PERSONAL.email}`}
-                icon={Mail}
                 label="Email"
                 value={PERSONAL.email}
-                color="#00D9FF"
+                icon={Mail}
+                color="#E63946"
               />
-              <ContactCard
+              <ContactRow
                 href={PERSONAL.linkedin}
-                icon={Linkedin}
                 label="LinkedIn"
                 value="utkarsh-jaiswal-7b2938376"
-                color="#A855F7"
+                icon={Linkedin}
+                color="#0047FF"
               />
-              <ContactCard
+              <ContactRow
                 href={PERSONAL.github}
-                icon={Github}
                 label="GitHub"
                 value="utkarsh2172006-design"
-                color="#10B981"
+                icon={Github}
+                color="#00B388"
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-12 pt-8 border-t border-[#EFE9DD]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <p className="text-sm text-[#EFE9DD]/50">
+                <Phone className="inline w-4 h-4 mr-1.5 -translate-y-0.5" />
+                {PERSONAL.phone}
+                <span className="mx-3">·</span>
+                <MapPin className="inline w-4 h-4 mr-1.5 -translate-y-0.5" />
+                {PERSONAL.location}
+              </p>
               <a href={PERSONAL.resumePath} download>
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-[#050714] font-semibold rounded-md px-6 h-12 shadow-[0_0_30px_-8px_rgba(0,217,255,0.6)] group"
-                >
+                <Button className="bg-[#E63946] hover:bg-[#FF5050] text-[#EFE9DD] rounded-none h-12 px-6 font-medium group">
                   <Download className="w-4 h-4 mr-2" />
                   Download Resume (PDF)
+                  <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </Button>
               </a>
-              <a href={`mailto:${PERSONAL.email}`}>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-md px-6 h-12 font-mono group"
-                >
-                  ./send_email.sh
-                  <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Button>
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-12 text-xs font-mono text-slate-500">
-              <span className="flex items-center gap-1.5">
-                <Phone className="w-3 h-3 text-cyan-400" />
-                {PERSONAL.phone}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <MapPin className="w-3 h-3 text-cyan-400" />
-                {PERSONAL.location}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                online
-              </span>
             </div>
           </div>
         </section>
       </main>
 
       {/* ─── FOOTER ─── */}
-      <footer className="relative z-10 border-t border-cyan-500/15 py-8 px-5 md:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs font-mono text-slate-500">
-            <span className="text-cyan-400">[</span>
-            system<span className="text-cyan-400">]</span> © {new Date().getFullYear()} · Utkarsh Jaiswal · Built with neurons &amp; code
+      <footer className="bg-[#0A0A0A] text-[#EFE9DD] py-8 px-5 md:px-8 border-t border-[#EFE9DD]/10">
+        <div className="container mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs font-mono uppercase tracking-widest text-[#EFE9DD]/40">
+            © {new Date().getFullYear()} · Utkarsh Jaiswal · Built with care
           </p>
-          <div className="flex items-center gap-4">
-            <a href={`mailto:${PERSONAL.email}`} className="text-slate-500 hover:text-cyan-400 transition-colors" aria-label="Email">
-              <Mail className="w-4 h-4" />
-            </a>
-            <a href={PERSONAL.linkedin} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-cyan-400 transition-colors" aria-label="LinkedIn">
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a href={PERSONAL.github} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-cyan-400 transition-colors" aria-label="GitHub">
-              <Github className="w-4 h-4" />
-            </a>
-          </div>
+          <a
+            href="#hero"
+            className="text-xs font-mono uppercase tracking-widest text-[#EFE9DD]/40 hover:text-[#E63946] transition-colors flex items-center gap-2"
+          >
+            Back to top
+            <ArrowUpRight className="w-3 h-3" />
+          </a>
         </div>
       </footer>
 
       {showTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-md bg-gradient-to-br from-cyan-500 to-purple-500 text-[#050714] shadow-[0_0_25px_-5px_rgba(0,217,255,0.8)] flex items-center justify-center hover:scale-110 hover:rotate-3 transition-all"
+          className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-[#E63946] text-[#EFE9DD] shadow-lg flex items-center justify-center hover:scale-110 hover:rotate-12 transition-all"
           aria-label="Back to top"
         >
-          <ChevronUp className="w-5 h-5" />
+          <ArrowUpRight className="w-5 h-5 -rotate-45" />
         </button>
       )}
 
       <style jsx global>{`
         html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #050714; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 217, 255, 0.3); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 217, 255, 0.5); }
-        @keyframes blink { 50% { opacity: 0; } }
-        .cursor-blink { animation: blink 1s steps(2) infinite; }
+        @media (min-width: 768px) {
+          body { cursor: none; }
+          a, button, [data-cursor='hover'] { cursor: none; }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow { animation: spin-slow 12s linear infinite; }
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .animate-marquee { animation: marquee 30s linear infinite; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #EFE9DD; }
+        ::-webkit-scrollbar-thumb { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb:hover { background: #E63946; }
       `}</style>
     </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
-// Neural Network Animated Background
+// Cursor
 // ─────────────────────────────────────────────────────────────
-
-function NeuralBackground({ mouse }: { mouse: { x: number; y: number } }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
-
-    const nodeCount = Math.min(60, Math.floor((width * height) / 22000))
-    const nodes: { x: number; y: number; vx: number; vy: number; r: number; pulse: number }[] = []
-
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 1.5 + 0.8,
-        pulse: Math.random() * Math.PI * 2,
-      })
-    }
-
-    const maxDist = 140
-    let raf = 0
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height)
-
-      // Update nodes
-      for (const n of nodes) {
-        n.x += n.vx
-        n.y += n.vy
-        if (n.x < 0 || n.x > width) n.vx *= -1
-        if (n.y < 0 || n.y > height) n.vy *= -1
-        n.pulse += 0.02
-
-        // Subtle attraction to mouse
-        const dx = mouse.x - n.x
-        const dy = mouse.y - n.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 180) {
-          n.x += (dx / dist) * 0.2
-          n.y += (dy / dist) * 0.2
-        }
-      }
-
-      // Draw connections
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x
-          const dy = nodes[i].y - nodes[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.25
-            const grad = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y)
-            grad.addColorStop(0, `rgba(0, 217, 255, ${alpha})`)
-            grad.addColorStop(1, `rgba(168, 85, 247, ${alpha})`)
-            ctx.strokeStyle = grad
-            ctx.lineWidth = 0.6
-            ctx.beginPath()
-            ctx.moveTo(nodes[i].x, nodes[i].y)
-            ctx.lineTo(nodes[j].x, nodes[j].y)
-            ctx.stroke()
-          }
-        }
-      }
-
-      // Draw nodes
-      for (const n of nodes) {
-        const pulseR = n.r + Math.sin(n.pulse) * 0.5
-        const glowR = Math.max(0.1, pulseR * 4)
-
-        // Glow
-        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR)
-        grad.addColorStop(0, "rgba(0, 217, 255, 0.6)")
-        grad.addColorStop(1, "rgba(0, 217, 255, 0)")
-        ctx.fillStyle = grad
-        ctx.beginPath()
-        ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2)
-        ctx.fill()
-
-        // Core
-        ctx.fillStyle = "rgba(180, 240, 255, 0.9)"
-        ctx.beginPath()
-        ctx.arc(n.x, n.y, Math.max(0.1, pulseR), 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      raf = requestAnimationFrame(render)
-    }
-    render()
-
-    const onResize = () => {
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
-    }
-    window.addEventListener("resize", onResize)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener("resize", onResize)
-    }
-  }, [mouse])
-
+function Cursor({ x, y, hovering }: { x: number; y: number; hovering: boolean }) {
+  if (typeof window !== "undefined" && window.innerWidth < 768) return null
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
-      style={{ width: "100vw", height: "100vh" }}
-    />
+    <>
+      <div
+        className="pointer-events-none fixed z-[100] hidden md:block mix-blend-difference"
+        style={{
+          left: x,
+          top: y,
+          transform: `translate(-50%, -50%) scale(${hovering ? 2.5 : 1})`,
+          transition: "transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+        }}
+      >
+        <div className="w-3 h-3 rounded-full bg-white" />
+      </div>
+      <div
+        className="pointer-events-none fixed z-[100] hidden md:block"
+        style={{
+          left: x,
+          top: y,
+          transform: `translate(-50%, -50%) scale(${hovering ? 0 : 1})`,
+          transition: "transform 300ms ease-out, left 200ms ease-out, top 200ms ease-out",
+        }}
+      >
+        <div className="w-8 h-8 rounded-full border border-[#0A0A0A]/40" />
+      </div>
+    </>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
-// Terminal Panel (hero right side)
+// Marquee
 // ─────────────────────────────────────────────────────────────
-
-function TerminalPanel() {
-  const [visibleLines, setVisibleLines] = useState(0)
-  const [currentChar, setCurrentChar] = useState(0)
-
-  useEffect(() => {
-    if (visibleLines >= TYPING_LINES.length) return
-    const line = TYPING_LINES[visibleLines]
-    const fullText = line.code
-    if (currentChar < fullText.length) {
-      const t = setTimeout(() => setCurrentChar(currentChar + 1), 35)
-      return () => clearTimeout(t)
-    } else {
-      const t = setTimeout(() => {
-        setVisibleLines(visibleLines + 1)
-        setCurrentChar(0)
-      }, 400)
-      return () => clearTimeout(t)
-    }
-  }, [visibleLines, currentChar])
-
+function Marquee({
+  words,
+  bg,
+  fg,
+  accent,
+}: {
+  words: string[]
+  bg: string
+  fg: string
+  accent: string
+}) {
+  const doubled = [...words, ...words, ...words, ...words]
   return (
-    <Card className="bg-slate-950/80 border-cyan-500/30 backdrop-blur-md overflow-hidden shadow-[0_0_40px_-10px_rgba(0,217,255,0.4)]">
-      <CardContent className="p-0">
-        {/* Terminal header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/80 border-b border-cyan-500/20">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-            </div>
-            <span className="text-xs font-mono text-slate-500 ml-2">utkarsh@iitj: ~/portfolio</span>
-          </div>
-          <Terminal className="w-3.5 h-3.5 text-cyan-400/60" />
-        </div>
-
-        {/* Terminal body */}
-        <div className="p-4 md:p-5 font-mono text-xs md:text-sm min-h-[280px] space-y-1.5">
-          {TYPING_LINES.slice(0, visibleLines).map((line, i) => (
-            <div key={i} className="flex items-baseline gap-1">
-              <span className="text-emerald-400">{line.prompt}</span>
-              <span className="text-cyan-300">{line.code}</span>
-              {line.comment && (
-                <span className="text-slate-500 ml-2 text-xs">{line.comment}</span>
-              )}
-            </div>
-          ))}
-
-          {/* Current typing line */}
-          {visibleLines < TYPING_LINES.length && (
-            <div className="flex items-baseline gap-1">
-              <span className="text-emerald-400">{TYPING_LINES[visibleLines].prompt}</span>
-              <span className="text-cyan-300">
-                {TYPING_LINES[visibleLines].code.slice(0, currentChar)}
-              </span>
-              <span className="cursor-blink text-cyan-400">▋</span>
-            </div>
-          )}
-
-          {/* Output line after typing */}
-          {visibleLines >= TYPING_LINES.length && (
-            <div className="mt-3 space-y-1">
-              <div className="text-emerald-400">
-                <span className="text-slate-500">[INFO]</span> Model trained successfully.
-              </div>
-              <div className="text-slate-300">
-                <span className="text-slate-500">[INFO]</span> IGP ready: <span className="text-cyan-300 font-bold">87.50%</span>
-              </div>
-              <div className="text-slate-300 flex items-center gap-1">
-                <span className="text-slate-500">[INFO]</span> Status: <span className="text-emerald-400">OPEN_TO_INTERNSHIPS</span>
-                <span className="cursor-blink text-cyan-400 ml-1">▋</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Bottom status bar */}
-        <div className="flex items-center justify-between px-4 py-2 bg-slate-900/80 border-t border-cyan-500/20 text-[10px] font-mono">
-          <div className="flex items-center gap-3 text-slate-500">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              python 3.11
-            </span>
-            <span>·</span>
-            <span>UTF-8</span>
-            <span>·</span>
-            <span>LN {visibleLines + 1}</span>
-          </div>
-          <span className="text-cyan-400/70">INS · NORMAL</span>
-        </div>
-      </CardContent>
-    </Card>
+    <div
+      className="py-4 md:py-5 overflow-hidden border-y"
+      style={{ background: bg, color: fg, borderColor: bg }}
+    >
+      <div className="flex animate-marquee whitespace-nowrap">
+        {doubled.map((word, i) => (
+          <span
+            key={i}
+            className="mx-6 md:mx-10 text-2xl md:text-4xl font-black tracking-tight flex items-center gap-6 md:gap-10"
+            style={{ fontFamily: "var(--font-playfair), serif" }}
+          >
+            <span style={{ color: i % 4 === 1 ? accent : fg }}>{word}</span>
+            <Asterisk
+              className="w-5 h-5 md:w-7 md:h-7 shrink-0"
+              style={{ color: accent }}
+            />
+          </span>
+        ))}
+      </div>
+    </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
 // Section wrapper
 // ─────────────────────────────────────────────────────────────
-
-function NeuralSection({
+function Section({
   id,
-  layer,
-  eyebrow,
+  num,
   title,
   subtitle,
   children,
-  alt = false,
 }: {
   id: string
-  layer: string
-  eyebrow: string
+  num: string
   title: string
   subtitle: string
   children: React.ReactNode
-  alt?: boolean
 }) {
   const { ref, visible } = useReveal<HTMLDivElement>()
   return (
-    <section id={id} className={`py-24 md:py-32 px-5 md:px-8 relative ${alt ? "bg-slate-950/40 backdrop-blur-sm" : ""}`}>
+    <section id={id} className="py-24 md:py-32 px-5 md:px-8 relative">
       <div
         ref={ref}
-        className="max-w-6xl mx-auto"
+        className="container mx-auto max-w-7xl"
         style={{
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(30px)",
+          transform: visible ? "translateY(0)" : "translateY(40px)",
           transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
         }}
       >
-        {/* Header */}
-        <div className="mb-12 md:mb-16">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-widest bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 rounded">
-              {layer}
+        <div className="mb-12 md:mb-20">
+          <div className="flex items-baseline gap-3 mb-3">
+            <span
+              className="text-xs font-mono uppercase tracking-widest text-[#E63946]"
+              style={{ fontFamily: "var(--font-geist-mono), monospace" }}
+            >
+              — {num} /
             </span>
-            <span className="text-xs font-mono uppercase tracking-widest text-cyan-500/70">
-              {eyebrow}
+            <span className="text-xs font-mono uppercase tracking-widest text-[#0A0A0A]/50">
+              {subtitle}
             </span>
           </div>
           <h2
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-2"
-            style={{ fontFamily: "var(--font-display), sans-serif" }}
+            className="text-6xl md:text-8xl lg:text-9xl font-black tracking-[-0.04em] leading-[0.9]"
+            style={{ fontFamily: "var(--font-playfair), serif" }}
           >
             {title}
-            <span className="text-cyan-400">.</span>
+            <span className="text-[#E63946]">.</span>
           </h2>
-          <p className="text-base md:text-lg text-slate-500 font-mono">
-            <span className="text-cyan-500/60">// </span>
-            {subtitle}
-          </p>
         </div>
         {children}
       </div>
@@ -1176,34 +917,33 @@ function NeuralSection({
 }
 
 // ─────────────────────────────────────────────────────────────
-// Neural stat
+// Animated stat
 // ─────────────────────────────────────────────────────────────
-
-function NeuralStat({
+function AnimatedStat({
   value,
   suffix,
   label,
   decimals = 0,
-  color,
 }: {
   value: number
   suffix: string
   label: string
   decimals?: number
-  color: string
 }) {
   const { ref, visible } = useReveal<HTMLDivElement>()
-  const v = useCounter(value, 1500, visible)
+  const v = useCounter(value * Math.pow(10, decimals), 1800, visible)
+  const display = (v / Math.pow(10, decimals)).toFixed(decimals)
+
   return (
     <div ref={ref} className="group">
       <p
-        className="text-3xl md:text-4xl font-bold leading-none transition-transform group-hover:scale-105"
-        style={{ color, fontFamily: "var(--font-mono), monospace" }}
+        className="text-5xl md:text-6xl lg:text-7xl font-black leading-none group-hover:text-[#E63946] transition-colors"
+        style={{ fontFamily: "var(--font-playfair), serif" }}
       >
-        {typeof v === "number" ? v.toFixed(decimals) : v}
-        <span className="text-lg text-slate-500 ml-0.5">{suffix}</span>
+        {display}
+        <span className="text-2xl md:text-3xl text-[#0A0A0A]/40 ml-1">{suffix}</span>
       </p>
-      <p className="mt-2 text-xs font-mono uppercase tracking-wider text-slate-500">
+      <p className="mt-3 text-xs md:text-sm font-mono uppercase tracking-wider text-[#0A0A0A]/60">
         {label}
       </p>
     </div>
@@ -1211,297 +951,79 @@ function NeuralStat({
 }
 
 // ─────────────────────────────────────────────────────────────
-// Social link
+// Skill card with tilt
 // ─────────────────────────────────────────────────────────────
-
-function SocialLink({
-  href,
+function SkillCard({
+  skill,
   icon: Icon,
-  label,
-  color,
-}: {
-  href: string
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  color: string
-}) {
-  return (
-    <a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      aria-label={label}
-      className="group w-10 h-10 rounded-md bg-slate-900/60 border border-cyan-500/20 flex items-center justify-center text-slate-400 transition-all hover:scale-110 hover:-translate-y-0.5"
-      style={{ color: undefined }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = color + "60"
-        e.currentTarget.style.color = color
-        e.currentTarget.style.boxShadow = `0 0 20px -5px ${color}80`
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = ""
-        e.currentTarget.style.color = ""
-        e.currentTarget.style.boxShadow = ""
-      }}
-    >
-      <Icon className="w-4 h-4" />
-    </a>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────
-// Layer card (skill)
-// ─────────────────────────────────────────────────────────────
-
-function LayerCard({
-  layer,
   index,
 }: {
-  layer: typeof SKILL_LAYERS[number]
+  skill: typeof SKILLS[number]
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>
   index: number
 }) {
   const { ref, visible } = useReveal<HTMLDivElement>()
-  const Icon = layer.icon
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 })
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const px = (e.clientX - rect.left) / rect.width - 0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5
+    setTilt({ rx: -py * 8, ry: px * 8 })
+  }
+  const onMouseLeave = () => setTilt({ rx: 0, ry: 0 })
+
   return (
     <div
       ref={ref}
-      className="group relative bg-slate-900/40 border border-cyan-500/20 rounded-lg p-6 md:p-8 hover:border-cyan-500/50 transition-all hover:-translate-y-1 hover:shadow-[0_0_40px_-10px_rgba(0,217,255,0.4)] backdrop-blur-sm"
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className="group relative bg-white border-2 border-[#0A0A0A] p-6 md:p-8 transition-all duration-300 hover:shadow-[8px_8px_0_0_#0A0A0A] hover:-translate-x-1 hover:-translate-y-1"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(30px)",
-        transition: "opacity 0.6s ease-out, transform 0.6s ease-out, border-color 0.3s, box-shadow 0.3s",
-        transitionDelay: `${index * 100}ms`,
+        transform: visible
+          ? `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`
+          : "perspective(1000px) translateY(40px)",
+        transition: "opacity 0.6s ease-out, transform 0.2s ease-out, box-shadow 0.3s ease",
+        transitionDelay: visible ? `${index * 80}ms` : "0ms",
       }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        {/* Left: layer badge */}
-        <div className="md:col-span-3 flex items-center gap-4">
-          <div
-            className="relative w-14 h-14 rounded-lg flex items-center justify-center"
-            style={{ background: layer.color + "20", border: `1px solid ${layer.color}50` }}
+      <div className="absolute top-4 right-4 text-xs font-mono text-[#0A0A0A]/30">
+        0{index + 1}
+      </div>
+
+      <div
+        className="w-14 h-14 mb-6 flex items-center justify-center rounded-none"
+        style={{ background: skill.color }}
+      >
+        <Icon className="w-7 h-7 text-white" />
+      </div>
+
+      <h3
+        className="text-2xl md:text-3xl font-bold mb-4"
+        style={{ fontFamily: "var(--font-playfair), serif" }}
+      >
+        {skill.category}
+      </h3>
+
+      <div className="flex flex-wrap gap-1.5">
+        {skill.items.map((item) => (
+          <span
+            key={item}
+            className="inline-block px-2.5 py-1 text-xs font-mono border border-[#0A0A0A]/30 text-[#0A0A0A]/70 group-hover:border-[#0A0A0A] transition-colors"
           >
-            <Icon className="w-6 h-6" style={{ color: layer.color }} />
-            <div
-              className="absolute inset-0 rounded-lg blur-md opacity-50"
-              style={{ background: layer.color + "30" }}
-            />
-          </div>
-          <div>
-            <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: layer.color }}>
-              {layer.layer}
-            </p>
-            <p
-              className="text-base md:text-lg font-bold text-white"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
-            >
-              {layer.name}
-            </p>
-          </div>
-        </div>
-
-        {/* Middle: subtitle */}
-        <div className="md:col-span-3">
-          <p className="text-sm text-slate-400 font-mono">
-            <span className="text-slate-600">// </span>
-            {layer.subtitle}
-          </p>
-        </div>
-
-        {/* Right: skill bars */}
-        <div className="md:col-span-6 space-y-2">
-          {layer.skills.map((skill, i) => (
-            <div key={skill.name} className="flex items-center gap-3">
-              <span className="text-xs font-mono text-slate-400 w-32 md:w-36 shrink-0">
-                {skill.name}
-              </span>
-              <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-1000 ease-out"
-                  style={{
-                    width: visible ? `${skill.level}%` : "0%",
-                    background: `linear-gradient(90deg, ${layer.color}, ${layer.color}80)`,
-                    transitionDelay: `${(index * 4 + i) * 80}ms`,
-                  }}
-                />
-              </div>
-              <span
-                className="text-xs font-mono w-8 text-right"
-                style={{ color: layer.color }}
-              >
-                {skill.level}
-              </span>
-            </div>
-          ))}
-        </div>
+            {item}
+          </span>
+        ))}
       </div>
     </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
-// Loss chart
+// Project block
 // ─────────────────────────────────────────────────────────────
-
-function LossChart({ data }: { data: number[] }) {
-  const { ref, visible } = useReveal<SVGSVGElement>()
-  const w = 600
-  const h = 180
-  const padding = { top: 20, right: 20, bottom: 30, left: 40 }
-  const innerW = w - padding.left - padding.right
-  const innerH = h - padding.top - padding.bottom
-
-  const max = Math.max(...data)
-  const min = Math.min(...data)
-  const range = max - min || 1
-
-  const points = data.map((v, i) => ({
-    x: padding.left + (i / (data.length - 1)) * innerW,
-    y: padding.top + (1 - (v - min) / range) * innerH,
-  }))
-
-  const pathD = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ")
-
-  const areaD = `${pathD} L ${points[points.length - 1].x} ${padding.top + innerH} L ${points[0].x} ${padding.top + innerH} Z`
-
-  return (
-    <svg ref={ref} viewBox={`0 0 ${w} ${h}`} className="w-full h-auto">
-      <defs>
-        <linearGradient id="lossGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#00D9FF" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#00D9FF" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
-      {/* Grid lines */}
-      {[0, 0.25, 0.5, 0.75, 1].map((g, i) => {
-        const y = padding.top + g * innerH
-        return (
-          <g key={i}>
-            <line
-              x1={padding.left}
-              y1={y}
-              x2={padding.left + innerW}
-              y2={y}
-              stroke="rgba(148, 163, 184, 0.1)"
-              strokeWidth="1"
-            />
-            <text
-              x={padding.left - 6}
-              y={y + 3}
-              textAnchor="end"
-              className="text-[9px] fill-slate-500"
-              style={{ fontFamily: "var(--font-mono), monospace" }}
-            >
-              {(max - g * range).toFixed(2)}
-            </text>
-          </g>
-        )
-      })}
-
-      {/* Area */}
-      <path
-        d={areaD}
-        fill="url(#lossGrad)"
-        style={{
-          opacity: visible ? 1 : 0,
-          transition: "opacity 1s ease-out 0.5s",
-        }}
-      />
-
-      {/* Line */}
-      <path
-        d={pathD}
-        fill="none"
-        stroke="#00D9FF"
-        strokeWidth="2"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        style={{
-          strokeDasharray: 2000,
-          strokeDashoffset: visible ? 0 : 2000,
-          transition: "stroke-dashoffset 2s ease-out",
-        }}
-      />
-
-      {/* Points */}
-      {points.map((p, i) => (
-        <circle
-          key={i}
-          cx={p.x}
-          cy={p.y}
-          r={i === points.length - 1 ? 4 : 2}
-          fill={i === points.length - 1 ? "#10B981" : "#00D9FF"}
-          style={{
-            opacity: visible ? 1 : 0,
-            transition: `opacity 0.3s ease-out ${1.8 + i * 0.05}s`,
-          }}
-        />
-      ))}
-
-      {/* X axis labels */}
-      {[0, 5, 10, 15, 19].map((idx) => (
-        <text
-          key={idx}
-          x={padding.left + (idx / (data.length - 1)) * innerW}
-          y={h - 8}
-          textAnchor="middle"
-          className="text-[9px] fill-slate-500"
-          style={{ fontFamily: "var(--font-mono), monospace" }}
-        >
-          e{idx + 1}
-        </text>
-      ))}
-    </svg>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────
-// Metric card
-// ─────────────────────────────────────────────────────────────
-
-function MetricCard({
-  label,
-  value,
-  icon: Icon,
-  color,
-}: {
-  label: string
-  value: string
-  icon: React.ComponentType<{ className?: string }>
-  color: string
-}) {
-  return (
-    <Card className="bg-slate-900/40 border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-colors">
-      <CardContent className="p-5 flex items-center gap-4">
-        <div
-          className="w-10 h-10 rounded-md flex items-center justify-center shrink-0"
-          style={{ background: color + "20", border: `1px solid ${color}50` }}
-        >
-          <Icon className="w-5 h-5" style={{ color }} />
-        </div>
-        <div>
-          <p
-            className="text-2xl font-bold leading-none"
-            style={{ color, fontFamily: "var(--font-mono), monospace" }}
-          >
-            {value}
-          </p>
-          <p className="text-[11px] font-mono uppercase tracking-wider text-slate-500 mt-1.5">
-            {label}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────
-// Experiment (project) card
-// ─────────────────────────────────────────────────────────────
-
-function ExperimentCard({
+function ProjectBlock({
   project,
   index,
 }: {
@@ -1512,101 +1034,115 @@ function ExperimentCard({
   return (
     <div
       ref={ref}
+      className="group relative border-t-2 border-[#0A0A0A] pt-6 md:pt-8"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(30px)",
-        transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-        transitionDelay: `${index * 100}ms`,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
       }}
     >
-      <Card
-        className="bg-slate-900/40 border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all overflow-hidden group"
-      >
-        <CardContent className="p-0">
-          {/* Top bar */}
-          <div
-            className="px-5 py-2.5 flex items-center justify-between border-b"
-            style={{
-              background: project.color + "10",
-              borderColor: project.color + "30",
-            }}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+        <div className="md:col-span-3 flex md:flex-col items-start gap-3">
+          <span
+            className="text-5xl md:text-7xl font-black leading-none"
+            style={{ fontFamily: "var(--font-playfair), serif", color: project.color }}
           >
-            <div className="flex items-center gap-2 font-mono text-xs">
-              <span style={{ color: project.color }}>
-                experiment_{String(index + 1).padStart(2, "0")}.py
+            0{index + 1}
+          </span>
+          <div className="md:mt-4">
+            <Badge className="bg-transparent border border-[#0A0A0A] text-[#0A0A0A] rounded-none font-mono text-[10px] uppercase tracking-wider">
+              {project.type}
+            </Badge>
+            <p className="text-xs font-mono text-[#0A0A0A]/50 mt-3">{project.date}</p>
+            <p className="text-xs text-[#0A0A0A]/60 mt-1">{project.company}</p>
+          </div>
+        </div>
+
+        <div className="md:col-span-9">
+          <h3
+            className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 group-hover:text-[#0A0A0A] transition-colors"
+            style={{ fontFamily: "var(--font-playfair), serif" }}
+          >
+            {project.title}
+          </h3>
+          <p
+            className="text-lg md:text-xl text-[#0A0A0A]/70 mb-6 leading-relaxed"
+            style={{ fontFamily: "var(--font-instrument), serif" }}
+          >
+            {project.description}
+          </p>
+
+          <ul className="space-y-2 mb-6">
+            {project.bullets.map((b, i) => (
+              <li key={i} className="flex gap-3 text-sm md:text-base text-[#0A0A0A]/80">
+                <span
+                  className="font-mono shrink-0 mt-0.5"
+                  style={{ color: project.color }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1.5 text-xs font-mono bg-[#0A0A0A] text-[#EFE9DD]"
+              >
+                {tech}
               </span>
-              <span className="text-slate-500">·</span>
-              <span className="text-slate-400">{project.type}</span>
-            </div>
-            <span className="text-xs font-mono text-slate-500">{project.date}</span>
+            ))}
           </div>
-
-          <div className="grid md:grid-cols-12">
-            {/* Left meta */}
-            <div className="md:col-span-3 p-6 border-b md:border-b-0 md:border-r border-cyan-500/15">
-              <p
-                className="text-xs font-mono uppercase tracking-widest mb-3"
-                style={{ color: project.color }}
-              >
-                {project.company}
-              </p>
-              <div className="space-y-2">
-                {project.metrics.map((m) => (
-                  <div key={m.label}>
-                    <p className="text-xl font-bold text-white leading-none font-mono">
-                      {m.value >= 1000 ? `${(m.value / 1000).toFixed(0)}K` : m.value}
-                    </p>
-                    <p className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mt-0.5">
-                      {m.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right content */}
-            <div className="md:col-span-9 p-6 md:p-8">
-              <h3
-                className="text-xl md:text-2xl font-bold text-white mb-3"
-                style={{ fontFamily: "var(--font-display), sans-serif" }}
-              >
-                {project.title}
-              </h3>
-              <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-                {project.description}
-              </p>
-              <ul className="space-y-1.5 mb-5">
-                {project.bullets.map((b, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-slate-300">
-                    <span className="font-mono shrink-0 mt-0.5" style={{ color: project.color }}>
-                      [{String(i + 1).padStart(2, "0")}]
-                    </span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex flex-wrap gap-1.5">
-                {project.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 py-0.5 text-[11px] font-mono bg-slate-800/60 text-slate-300 border border-slate-700/50 rounded"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────
+// Education card
+// ─────────────────────────────────────────────────────────────
+function EduCard({ edu }: { edu: typeof EDUCATION[number] }) {
+  return (
+    <Card className="bg-transparent border-0 border-l-2 border-[#0A0A0A] pl-5 md:pl-6 rounded-none shadow-none hover:border-[#E63946] transition-colors">
+      <CardContent className="p-0">
+        <div className="flex items-center gap-2 mb-2">
+          <GraduationCap className="w-4 h-4 text-[#E63946]" />
+          <span className="text-xs font-mono text-[#0A0A0A]/50 uppercase tracking-wider">
+            {edu.date}
+          </span>
+        </div>
+        <h3
+          className="text-xl md:text-2xl font-bold leading-tight mb-1"
+          style={{ fontFamily: "var(--font-playfair), serif" }}
+        >
+          {edu.degree}
+        </h3>
+        <p className="text-sm text-[#0047FF] font-medium mb-2">{edu.school}</p>
+        <p className="text-sm text-[#0A0A0A]/60 mb-3">{edu.detail}</p>
+        {edu.coursework.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {edu.coursework.map((c) => (
+              <span
+                key={c}
+                className="px-2 py-0.5 text-[10px] font-mono bg-[#0A0A0A]/5 border border-[#0A0A0A]/20 text-[#0A0A0A]/70"
+              >
+                {c}
+              </span>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
 // Cert card
 // ─────────────────────────────────────────────────────────────
-
 function CertCard({
   title,
   org,
@@ -1619,39 +1155,37 @@ function CertCard({
   color: string
 }) {
   return (
-    <Card className="bg-slate-900/40 border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-colors">
-      <CardContent className="p-4 flex items-start gap-3">
-        <div
-          className="w-9 h-9 rounded-md flex items-center justify-center shrink-0"
-          style={{ background: color + "20", border: `1px solid ${color}50` }}
-        >
-          <Award className="w-4 h-4" style={{ color }} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-white leading-tight mb-1">{title}</p>
-          <p className="text-xs font-mono text-slate-500">
+    <div
+      className="group p-5 bg-white border-2 border-[#0A0A0A] hover:shadow-[6px_6px_0_0_#0A0A0A] hover:-translate-x-1 hover:-translate-y-1 transition-all"
+      data-cursor="hover"
+    >
+      <div className="flex items-start gap-3">
+        <Award className="w-5 h-5 shrink-0 mt-0.5" style={{ color }} />
+        <div className="flex-1">
+          <p className="text-sm font-bold leading-tight mb-1">{title}</p>
+          <p className="text-xs font-mono text-[#0A0A0A]/50">
             {org} · {year}
           </p>
         </div>
-        <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────
-
-function ContactCard({
+// Contact row
+// ─────────────────────────────────────────────────────────────
+function ContactRow({
   href,
-  icon: Icon,
   label,
   value,
+  icon: Icon,
   color,
 }: {
   href: string
-  icon: React.ComponentType<{ className?: string }>
   label: string
   value: string
+  icon: React.ComponentType<{ className?: string }>
   color: string
 }) {
   return (
@@ -1659,25 +1193,20 @@ function ContactCard({
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group block"
+      className="group block py-6 border-t border-[#EFE9DD]/15 hover:bg-[#EFE9DD]/5 transition-colors px-2"
     >
-      <Card className="bg-slate-900/40 border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all group-hover:-translate-y-0.5">
-        <CardContent className="p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div
-              className="w-10 h-10 rounded-md flex items-center justify-center"
-              style={{ background: color + "20", border: `1px solid ${color}50` }}
-            >
-              <Icon className="w-4 h-4" style={{ color }} />
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-          </div>
-          <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-1">
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center gap-2">
+          <Icon className="w-4 h-4" style={{ color }} />
+          <span className="text-xs font-mono uppercase tracking-widest text-[#EFE9DD]/50">
             {label}
-          </p>
-          <p className="text-sm font-medium text-white truncate">{value}</p>
-        </CardContent>
-      </Card>
+          </span>
+        </div>
+        <ArrowUpRight className="w-4 h-4 text-[#EFE9DD]/30 group-hover:text-[#E63946] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+      </div>
+      <p className="text-lg md:text-xl font-medium break-all" style={{ fontFamily: "var(--font-playfair), serif" }}>
+        {value}
+      </p>
     </a>
   )
 }
