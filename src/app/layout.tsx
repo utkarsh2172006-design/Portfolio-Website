@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -12,39 +12,45 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Utkarsh Jaiswal — Aspiring Data Analyst | AI & DS, IIT Jodhpur",
+  title: "Utkarsh Jaiswal — AI & Data Science · IIT Jodhpur",
   description:
-    "Portfolio of Utkarsh Jaiswal — BS Applied AI & Data Science undergraduate at IIT Jodhpur. Specializing in Python, SQL, Power BI, Tableau, and data storytelling.",
+    "Portfolio of Utkarsh Jaiswal — BS Applied AI & Data Science undergraduate at IIT Jodhpur. Neural networks, data pipelines, dashboards, and ML experiments.",
   keywords: [
     "Utkarsh Jaiswal",
     "Data Analyst",
+    "Machine Learning",
+    "AI Engineer",
     "IIT Jodhpur",
     "AI and Data Science",
-    "Portfolio",
+    "Neural Networks",
     "Python",
-    "SQL",
-    "Power BI",
-    "Tableau",
+    "TensorFlow",
   ],
   authors: [{ name: "Utkarsh Jaiswal" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
-    description: "AI & Data Science Undergraduate at IIT Jodhpur.",
+    title: "Utkarsh Jaiswal — AI & Data Science",
+    description: "Where neural networks meet data storytelling. IIT Jodhpur undergrad.",
     url: "https://chat.z.ai",
     siteName: "Utkarsh Jaiswal Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
-    description: "AI & Data Science Undergraduate at IIT Jodhpur.",
+    title: "Utkarsh Jaiswal — AI & Data Science",
+    description: "Where neural networks meet data storytelling.",
   },
 };
 
@@ -56,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />
