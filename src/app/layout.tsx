@@ -1,36 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display, Instrument_Serif } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  style: ["normal", "italic"],
-});
-
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "Utkarsh Jaiswal — Data Artist & Analyst in the Making",
+  title: "Utkarsh Jaiswal — Aspiring Data Analyst | AI & DS, IIT Jodhpur",
   description:
-    "Portfolio of Utkarsh Jaiswal — BS Applied AI & Data Science undergraduate at IIT Jodhpur. Data storytelling, dashboards, and analytical experiments.",
+    "Portfolio of Utkarsh Jaiswal — BS Applied AI & Data Science undergraduate at IIT Jodhpur. Specializing in Python, SQL, Power BI, Tableau, and data storytelling.",
   keywords: [
     "Utkarsh Jaiswal",
     "Data Analyst",
@@ -47,15 +35,15 @@ export const metadata: Metadata = {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Utkarsh Jaiswal — Data Artist & Analyst",
-    description: "AI & Data Science Undergraduate at IIT Jodhpur. Where data meets design.",
+    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
+    description: "AI & Data Science Undergraduate at IIT Jodhpur.",
     url: "https://chat.z.ai",
     siteName: "Utkarsh Jaiswal Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Utkarsh Jaiswal — Data Artist & Analyst",
+    title: "Utkarsh Jaiswal — Aspiring Data Analyst",
     description: "AI & Data Science Undergraduate at IIT Jodhpur.",
   },
 };
@@ -68,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${instrument.variable} antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />
